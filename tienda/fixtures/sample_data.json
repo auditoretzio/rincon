@@ -1,0 +1,172 @@
+[
+    {
+        "model": "tienda.categoria",
+        "pk": 1,
+        "fields": {
+            "nombre": "Cañas de Pescar",
+            "descripcion": "Cañas de alta calidad para todo tipo de pesca, desde spinning hasta surfcasting."
+        }
+    },
+    {
+        "model": "tienda.categoria",
+        "pk": 2,
+        "fields": {
+            "nombre": "Carretes",
+            "descripcion": "Carretes de spinning, baitcasting y más, para todas tus necesidades de pesca."
+        }
+    },
+    {
+        "model": "tienda.categoria",
+        "pk": 3,
+        "fields": {
+            "nombre": "Señuelos",
+            "descripcion": "Amplia variedad de señuelos artificiales para diferentes especies y técnicas."
+        }
+    },
+    {
+        "model": "tienda.categoria",
+        "pk": 4,
+        "fields": {
+            "nombre": "Anzuelos y Accesorios",
+            "descripcion": "Anzuelos, plomos, emerillones y todo tipo de accesorios para tu equipo."
+        }
+    },
+    {
+        "model": "tienda.categoria",
+        "pk": 5,
+        "fields": {
+            "nombre": "Líneas y Sedales",
+            "descripcion": "Líneas monofilamento, trenzadas y fluorocarbono de las mejores marcas."
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Caña Spinning Pro 2.40m",
+            "descripcion": "Caña de spinning de alta gama, construcción en carbono de alta densidad. Ideal para pesca en agua dulce y salada. Acción media-rápida, perfecta para señuelos de 10-30g.",
+            "precio": "45000.00",
+            "categoria": 1,
+            "stock": 15,
+            "destacado": true,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Carrete Shimano FX 2500",
+            "descripcion": "Carrete de spinning con 5 rodamientos, sistema de freno suave y potente. Capacidad de línea: 240m de 0.25mm. Relación de recuperación 5.0:1.",
+            "precio": "32000.00",
+            "categoria": 2,
+            "stock": 20,
+            "destacado": true,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Set de Señuelos Rapala 5 unidades",
+            "descripcion": "Pack de 5 señuelos Rapala de diferentes colores y tamaños. Incluye modelos flotantes y hundidos. Ideal para dorado, tararira y pejerrey.",
+            "precio": "18500.00",
+            "categoria": 3,
+            "stock": 8,
+            "destacado": true,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 4,
+        "fields": {
+            "nombre": "Línea Trenzada 8X 150m",
+            "descripcion": "Línea trenzada de 8 hebras, ultra resistente y sin memoria. Disponible en 20, 30 y 40 libras. Color verde camuflaje.",
+            "precio": "12500.00",
+            "categoria": 5,
+            "stock": 25,
+            "destacado": true,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 5,
+        "fields": {
+            "nombre": "Anzuelos Circle Hook x50",
+            "descripcion": "Pack de 50 anzuelos circle hook de acero al carbono. Ideales para pesca de fondo y captura y liberación. Tamaños del 2/0 al 6/0.",
+            "precio": "3500.00",
+            "categoria": 4,
+            "stock": 50,
+            "destacado": false,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 6,
+        "fields": {
+            "nombre": "Caña Telescópica 3.60m",
+            "descripcion": "Caña telescópica de fibra de vidrio, perfecta para viajes. Se pliega a 80cm. Acción media, ideal para pesca variada.",
+            "precio": "15000.00",
+            "categoria": 1,
+            "stock": 12,
+            "destacado": false,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 7,
+        "fields": {
+            "nombre": "Carrete Rotativo Baitcasting",
+            "descripcion": "Carrete baitcasting con sistema de freno magnético, 6+1 rodamientos. Perfecto para técnicas de casting con señuelos pesados.",
+            "precio": "42000.00",
+            "categoria": 2,
+            "stock": 3,
+            "destacado": true,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 8,
+        "fields": {
+            "nombre": "Jig Heads 10g x20",
+            "descripcion": "Cabezas plomadas de 10g con anzuelo incluido. Pack de 20 unidades. Ideales para pesca con vinilos y soft baits.",
+            "precio": "4200.00",
+            "categoria": 4,
+            "stock": 35,
+            "destacado": false,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 9,
+        "fields": {
+            "nombre": "Línea Monofilamento 0.30mm 300m",
+            "descripcion": "Línea monofilamento de nylon de alta calidad. Baja memoria, alta resistencia a la abrasión. Color cristal.",
+            "precio": "5500.00",
+            "categoria": 5,
+            "stock": 40,
+            "destacado": false,
+            "activo": true
+        }
+    },
+    {
+        "model": "tienda.producto",
+        "pk": 10,
+        "fields": {
+            "nombre": "Spinnerbait Doble Paleta",
+            "descripcion": "Spinnerbait con doble paleta Colorado y Willow. Peso 14g. Colores variados. Excelente para black bass y dorado.",
+            "precio": "6800.00",
+            "categoria": 3,
+            "stock": 18,
+            "destacado": true,
+            "activo": true
+        }
+    }
+]

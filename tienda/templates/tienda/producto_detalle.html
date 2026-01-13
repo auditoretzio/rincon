@@ -1,0 +1,147 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block title %}{{ producto.nombre }} - El Rincón del Pescador{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <a href="{% url 'tienda:index' %}" class="back-link">← Volver al inicio</a>
+
+        <div class="product-detail">
+            <div class="product-detail-gallery">
+                <div class="product-main-image" id="mainImageContainer">
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" id="mainProductImage">
+                    {% else %}
+                    <div class="product-placeholder-large">
+                        <span>🎣</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if producto.imagen2 or producto.imagen3 %}
+                <div class="product-thumbnails">
+                    {% if producto.imagen %}
+                    <div class="thumbnail active" onclick="changeImage('{{ producto.imagen.url }}', this)">
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }} - 1">
+                    </div>
+                    {% endif %}
+                    {% if producto.imagen2 %}
+                    <div class="thumbnail" onclick="changeImage('{{ producto.imagen2.url }}', this)">
+                        <img src="{{ producto.imagen2.url }}" alt="{{ producto.nombre }} - 2">
+                    </div>
+                    {% endif %}
+                    {% if producto.imagen3 %}
+                    <div class="thumbnail" onclick="changeImage('{{ producto.imagen3.url }}', this)">
+                        <img src="{{ producto.imagen3.url }}" alt="{{ producto.nombre }} - 3">
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <script>
+                function changeImage(src, element) {
+                    const container = document.getElementById('mainImageContainer');
+                    let img = document.getElementById('mainProductImage');
+
+                    if (!img) {
+                        // Si hay placeholder, limpiar y crear imagen
+                        container.innerHTML = '';
+                        img = document.createElement('img');
+                        img.id = 'mainProductImage';
+                        img.alt = '{{ producto.nombre }}';
+                        container.appendChild(img);
+                    }
+
+                    img.src = src;
+
+                    // Actualizar clase activa
+                    document.querySelectorAll('.thumbnail').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    element.classList.add('active');
+                }
+            </script>
+
+            <div class="product-detail-info">
+                <span class="product-category-badge">{{ producto.categoria.nombre }}</span>
+                <h1 class="product-detail-title">{{ producto.nombre }}</h1>
+
+                <div class="product-detail-price">
+                    <span class="price-label">Precio:</span>
+                    <span class="price-value">${{ producto.precio }}</span>
+                </div>
+
+
+
+                <div class="product-detail-description">
+                    <h3>Descripción</h3>
+                    <p>{{ producto.descripcion }}</p>
+                </div>
+
+                <div class="product-add-to-cart">
+                    <form action="{% url 'tienda:agregar_carrito' producto.id %}" method="post"
+                        class="add-to-cart-form">
+                        {% csrf_token %}
+                        <div class="quantity-input">
+                            <label for="id_cantidad">Cantidad:</label>
+                            {{ cantidad_form.cantidad }}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            🛒 Agregar al Carrito
+                        </button>
+                    </form>
+                </div>
+
+                <div class="product-detail-meta">
+                    <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
+                    <!-- <p><strong>Agregado:</strong> {{ producto.fecha_creacion|date:"d/m/Y" }}</p> -->
+                </div>
+            </div>
+        </div>
+
+        {% if productos_relacionados %}
+        <div class="related-products">
+            <h2 class="section-title">Productos Relacionados</h2>
+            <div class="products-grid">
+                {% for prod in productos_relacionados %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="{% url 'tienda:producto_detalle' prod.id %}" class="product-link">
+                            {% if prod.imagen %}
+                            <img src="{{ prod.imagen.url }}" alt="{{ prod.nombre }}">
+                            {% else %}
+                            <div class="product-placeholder">
+                                <span>🎣</span>
+                            </div>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <a href="{% url 'tienda:producto_detalle' prod.id %}" class="product-card-info">
+                            <span class="product-category">{{ prod.categoria.nombre }}</span>
+                            <h3 class="product-name">{{ prod.nombre }}</h3>
+                        </a>
+                        <div class="product-footer d-flex justify-content-between align-items-center">
+                            <span class="product-price">${{ prod.precio }}</span>
+                            <form action="{% url 'tienda:agregar_carrito' prod.id %}" method="post"
+                                style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-sm btn-primary add-to-cart-quick"
+                                    title="Agregar al Carrito">
+                                    🛒 +
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

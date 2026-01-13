@@ -1,0 +1,24 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1 class="text-success">¡Pedido Confirmado!</h1>
+        <p class="lead">Gracias por tu solicitud de pedido, {{ orden.nombre }}.</p>
+
+        <div class="alert alert-info">
+            <strong>Número de Orden: #{{ orden.id }}</strong>
+        </div>
+
+        <p>Hemos recibido tu pedido correctamente. Por favor, acércate a nuestro local para abonar y retirar tus
+            productos.</p>
+
+        <p>o podrias abonar el pedido a traves de transferencia bancaria a la cuenta de: (datos de la cuenta)
+            <strong> </strong>
+            una vez abonado, enviar comprobante de pago a <strong>asdasd@gmail.com o 2245471409</strong>
+        </p>
+
+        <a href="{% url 'tienda:index' %}" class="btn btn-primary">Volver al Inicio</a>
+    </div>
+</div>
+{% endblock %}

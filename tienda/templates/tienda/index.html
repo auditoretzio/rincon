@@ -1,0 +1,89 @@
+
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - El Rincón del Pescador{% endblock %}
+
+{% block content %}
+<section class="hero-modern" style="background: linear-gradient(120deg, #0a3d62 60%, #3c6382 100%); color: #fff; padding: 60px 0 40px 0;">
+    <div class="container text-center">
+        <h1 style="font-size: 3rem; font-weight: bold; margin-bottom: 10px;">El Rincón del Pescador</h1>
+        <p style="font-size: 1.3rem; margin-bottom: 25px;">Todo para tu próxima aventura de pesca</p>
+        <a href="#productos" class="btn btn-lg btn-warning" style="font-weight: bold;">Ver Productos</a>
+    </div>
+</section>
+
+<section id="categorias" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="mb-4 text-center" style="font-weight: bold;">Nuestras Categorías</h2>
+        <div class="row justify-content-center">
+            {% for categoria in categorias %}
+            <div class="col-6 col-md-3 mb-4">
+                <a href="{% url 'tienda:categoria' categoria.id %}" class="card h-100 shadow-sm text-center category-card-modern" style="text-decoration:none; color:inherit;">
+                    <div class="card-body">
+                        <div style="font-size:2.5rem;">📦</div>
+                        <h5 class="card-title mt-2">{{ categoria.nombre }}</h5>
+                        <p class="card-text text-muted">{{ categoria.productos.count }} productos</p>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12"><p class="text-center text-muted">No hay categorías disponibles.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="productos" class="py-5">
+    <div class="container">
+        <h2 class="mb-4 text-center" style="font-weight: bold;">Productos Destacados</h2>
+        <div class="row justify-content-center">
+            {% for producto in productos_destacados %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow product-card-modern">
+                    <a href="{% url 'tienda:producto_detalle' producto.id %}" class="product-link">
+                        {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}" style="object-fit:cover; height:220px;">
+                        {% else %}
+                        <div class="d-flex align-items-center justify-content-center" style="height:220px; background:#f1f2f6; font-size:3rem;">
+                            🎣
+                        </div>
+                        {% endif %}
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge bg-info mb-2" style="width:fit-content;">{{ producto.categoria.nombre }}</span>
+                        <h5 class="card-title" style="font-weight:bold;">{{ producto.nombre }}</h5>
+                        <p class="card-text text-truncate" title="{{ producto.descripcion|default:'Sin descripción' }}">
+                            {{ producto.descripcion|truncatewords:20|default:"Producto de pesca de alta calidad. ¡Descúbrelo!" }}
+                        </p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0 text-success">${{ producto.precio }}</span>
+                            <form action="{% url 'tienda:agregar_carrito' producto.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-sm btn-primary" title="Agregar al Carrito">
+                                    🛒
+                                </button>
+                            </form>
+                        </div>
+                        {% if producto.destacado %}
+                        <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Destacado</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12"><p class="text-center text-muted">No hay productos destacados en este momento.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-3">¿Listo para tu próxima pesca?</h2>
+        <p class="mb-4">Encuentra todo el equipamiento que necesitas en nuestra tienda</p>
+        <a href="/admin/" class="btn btn-light btn-lg">Gestionar Productos</a>
+    </div>
+</section>
+{% endblock %}

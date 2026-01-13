@@ -1,0 +1,67 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block title %}{{ categoria.nombre }} - El Rincón del Pescador{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <a href="{% url 'tienda:index' %}" class="back-link">← Volver al inicio</a>
+
+        <div class="category-header">
+            <h1 class="category-title">{{ categoria.nombre }}</h1>
+            {% if categoria.descripcion %}
+            <p class="category-description">{{ categoria.descripcion }}</p>
+            {% endif %}
+            <p class="category-count">{{ productos.count }} producto{{ productos.count|pluralize }}</p>
+        </div>
+
+        <div class="products-grid">
+            {% for producto in productos %}
+            <div class="product-card">
+                <div class="product-image">
+                    <a href="{% url 'tienda:producto_detalle' producto.id %}" class="product-link">
+                        {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <div class="product-placeholder">
+                            <span>🎣</span>
+                        </div>
+                        {% endif %}
+                    </a>
+                    {% if producto.destacado %}
+                    <span class="badge badge-featured">Destacado</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <a href="{% url 'tienda:producto_detalle' producto.id %}" class="product-card-info">
+                        <span class="product-category">{{ producto.categoria.nombre }}</span>
+                        <h3 class="product-name">{{ producto.nombre }}</h3>
+                        <div class="product-description">
+                            {{ producto.descripcion|truncatewords:15|default:"Producto de pesca disponible en nuestra tienda." }}
+                        </div>
+                    </a>
+                    <div class="product-footer d-flex justify-content-between align-items-center">
+                        <span class="product-price">${{ producto.precio }}</span>
+                        <div class="add-to-cart-form-container">
+                            <form action="{% url 'tienda:agregar_carrito' producto.id %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-sm btn-primary add-to-cart-quick"
+                                    title="Agregar al Carrito">
+                                    🛒
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <p class="empty-message">No hay productos en esta categoría.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

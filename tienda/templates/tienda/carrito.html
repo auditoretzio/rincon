@@ -1,0 +1,51 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Tu Carrito de Compras</h2>
+        {% if carrito|length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito %}
+                {% with producto=item.producto %}
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>${{ item.precio }}</td>
+                    <td>${{ item.total_precio }}</td>
+                    <td>
+                        <a href="{% url 'tienda:eliminar_carrito' producto.id %}"
+                            class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td><strong>${{ carrito.get_total_price }}</strong></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-end">
+            <a href="{% url 'tienda:index' %}" class="btn btn-secondary">Seguir Comprando</a>
+            <a href="{% url 'tienda:procesar_orden' %}" class="btn btn-success">Generar Solicitud de Pedido (Pagar en
+                Local)</a>
+        </div>
+        {% else %}
+        <p>Tu carrito está vacío.</p>
+        <a href="{% url 'tienda:index' %}" class="btn btn-primary">Ir a Comprar</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+# Archivos de entorno de Python
+venv/
+env/
+.env
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Archivos de base de datos
+*.sqlite3
+
+# Archivos de media subidos por los usuarios
+/media/
+
+# Archivos estáticos recolectados por Django
+/staticfiles/
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de registros
+*.log

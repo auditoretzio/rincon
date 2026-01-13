@@ -1,0 +1,44 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block title %}Quiénes Somos - El Rincón del Pescador{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="category-header">
+            <h1 class="category-title">Quiénes Somos</h1>
+            <p class="category-description">Conoce la historia detrás de tu tienda de pesca favorita.</p>
+        </div>
+
+        <div class="product-detail-description"
+            style="max-width: 800px; margin: 0 auto; border-left: 4px solid var(--accent-color);">
+            <h3>Nuestra Pasión</h3>
+            <p>
+                En <strong>El Rincón del Pescador</strong>, no solo vendemos artículos de pesca; compartimos la pasión
+                por la pesca.
+                Fundada con el objetivo de brindar a los pescadores de la zona los mejores equipos y el asesoramiento
+                más
+                completo.
+            </p>
+            <p>
+                Nos especializamos en todo tipo de pesca: de costa, embarcado y mucho más. Nuestro compromiso es
+                ofrecer productos de alta calidad y una atención personalizada que te ayude a disfrutar al máximo de
+                cada jornada en el agua.
+            </p>
+            <p>
+                Estamos ubicados en Dolores, Buenos Aires, y estamos siempre listos para ayudarte a elegir el equipo
+                perfecto para tu próxima aventura.
+            </p>
+        </div>
+
+        <div class="cta-section" style="margin-top: var(--spacing-xl); border-radius: var(--radius-lg);">
+            <div class="cta-content">
+                <h2>¿Tienes alguna duda?</h2>
+                <p>Contáctanos directamente por WhatsApp y te asesoraremos.</p>
+                <a href="https://wa.me/5492245471409" class="btn btn-primary" target="_blank">Enviar Mensaje</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

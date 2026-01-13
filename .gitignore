@@ -9,6 +9,7 @@ __pycache__/
 
 # Archivos de base de datos
 *.sqlite3
+data.json
 
 # Archivos de media subidos por los usuarios
 /media/

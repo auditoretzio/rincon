@@ -49,16 +49,16 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
-    'cloudinary_storage', # Added for Cloudinary storage backend (Must be before staticfiles)
     'django.contrib.staticfiles',
     'tienda',
-    'cloudinary', # Added for Cloudinary integration
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -160,17 +160,28 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Explicit configuration for CloudinaryField in models
+# Explicit configuration for Cloudinary library
+CLOUDINARY_CLOUD_NAME = CLOUDINARY_STORAGE['CLOUD_NAME']
+CLOUDINARY_API_KEY = CLOUDINARY_STORAGE['API_KEY']
+CLOUDINARY_API_SECRET = CLOUDINARY_STORAGE['API_SECRET']
+
 import cloudinary
 cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
-    api_key=CLOUDINARY_STORAGE['API_KEY'],
-    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+    cloud_name=CLOUDINARY_CLOUD_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_API_SECRET,
     secure=True
 )
 
-# Default File Storage for media files
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Storages configuration for Django 4.2+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

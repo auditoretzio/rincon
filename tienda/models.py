@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
 
 
 class Categoria(models.Model):
@@ -27,23 +28,20 @@ class Producto(models.Model):
         related_name='productos',
         verbose_name='Categoría'
     )
-    imagen = models.ImageField(
-        upload_to='productos/', 
+    imagen = CloudinaryField(
+        'Imagen Principal',
         blank=True, 
-        null=True,
-        verbose_name='Imagen Principal'
+        null=True
     )
-    imagen2 = models.ImageField(
-        upload_to='productos/', 
+    imagen2 = CloudinaryField(
+        'Imagen 2',
         blank=True, 
-        null=True,
-        verbose_name='Imagen 2'
+        null=True
     )
-    imagen3 = models.ImageField(
-        upload_to='productos/', 
+    imagen3 = CloudinaryField(
+        'Imagen 3',
         blank=True, 
-        null=True,
-        verbose_name='Imagen 3'
+        null=True
     )
     stock = models.PositiveIntegerField(default=0, verbose_name='Stock')
     destacado = models.BooleanField(default=False, verbose_name='Producto Destacado')

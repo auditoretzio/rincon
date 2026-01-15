@@ -163,16 +163,14 @@ STORAGES = {
 }
 
 # -------------------------------------------------
-# CLOUDINARY (USANDO CLOUDINARY_URL)
+# CLOUDINARY (CORRECTO PARA CloudinaryField)
 # -------------------------------------------------
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+CLOUDINARY_STORAGE = {
+    "CLOUDINARY_URL": os.environ.get("CLOUDINARY_URL"),
+}
 
-cloudinary.config(
-    secure=True
-)
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
 # -------------------------------------------------
@@ -192,4 +190,5 @@ sys.stderr.write(
     f"key={'OK' if CLOUDINARY_STORAGE['API_KEY'] else 'MISSING'}\n"
 )
 sys.stderr.flush()
+
 

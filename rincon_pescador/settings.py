@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
+
+# Heartbeat para Render
+sys.stderr.write(">>> Cargando settings.py de rincon_pescador <<<\n")
+sys.stderr.flush()
+
 import dj_database_url
 from dotenv import load_dotenv
 
@@ -158,11 +164,13 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Verificación de variables en logs de Render
+import sys
+# Verificación de variables en logs de Render (stderr para evitar buffering)
 if not CLOUDINARY_STORAGE['CLOUD_NAME']:
-    print("WARNING: CLOUDINARY_CLOUD_NAME no está configurada en las variables de entorno!")
+    sys.stderr.write("!!! [CLOUDINARY ERROR] CLOUDINARY_CLOUD_NAME no detectada !!!\n")
 else:
-    print(f"Cloudinary configurado para el cloud: {CLOUDINARY_STORAGE['CLOUD_NAME']}")
+    sys.stderr.write(f"--- [CLOUDINARY OK] Detectada cuenta: {CLOUDINARY_STORAGE['CLOUD_NAME']} ---\n")
+sys.stderr.flush()
 
 # Explicit configuration for Cloudinary library
 import cloudinary

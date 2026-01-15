@@ -1,3 +1,8 @@
+"""
+Django settings for rincon_pescador project.
+Django 4.2
+"""
+
 from pathlib import Path
 import os
 import sys
@@ -5,7 +10,9 @@ import sys
 import dj_database_url
 from dotenv import load_dotenv
 
-# Heartbeat Render
+# -------------------------------------------------
+# HEARTBEAT (Render logs)
+# -------------------------------------------------
 sys.stderr.write(">>> Cargando settings.py de rincon_pescador <<<\n")
 sys.stderr.flush()
 
@@ -13,12 +20,16 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# -------------------------------------------------
+# SECURITY
+# -------------------------------------------------
+
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
     "django-insecure-tu-clave-secreta-aqui"
 )
 
-#DEBUG = "RENDER" not in os.environ
+# ⚠️ DEBUG solo para depurar (luego volver a False)
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -35,15 +46,13 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(
-        f"https://{RENDER_EXTERNAL_HOSTNAME}"
-    )
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-# --------------------
-# APPS
-# --------------------
+# -------------------------------------------------
+# APPLICATIONS
+# -------------------------------------------------
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -53,15 +62,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
 
+    # Apps
     "tienda",
 ]
 
-# --------------------
+# -------------------------------------------------
 # MIDDLEWARE
-# --------------------
+# -------------------------------------------------
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -73,6 +84,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# -------------------------------------------------
+# URL / TEMPLATES
+# -------------------------------------------------
 
 ROOT_URLCONF = "rincon_pescador.urls"
 
@@ -96,9 +111,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "rincon_pescador.wsgi.application"
 
-# --------------------
+# -------------------------------------------------
 # DATABASE
-# --------------------
+# -------------------------------------------------
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -107,9 +122,9 @@ DATABASES = {
     )
 }
 
-# --------------------
-# AUTH
-# --------------------
+# -------------------------------------------------
+# AUTH VALIDATION
+# -------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -118,21 +133,25 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# --------------------
+# -------------------------------------------------
 # I18N
-# --------------------
+# -------------------------------------------------
 
 LANGUAGE_CODE = "es-ar"
 TIME_ZONE = "America/Argentina/Buenos_Aires"
 USE_I18N = True
 USE_TZ = True
 
-# --------------------
-# STATIC & MEDIA (FORMA CORRECTA)
-# --------------------
+# -------------------------------------------------
+# STATIC FILES (WhiteNoise)
+# -------------------------------------------------
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# -------------------------------------------------
+# STORAGE (Cloudinary + Static)
+# -------------------------------------------------
 
 STORAGES = {
     "default": {
@@ -143,5 +162,32 @@ STORAGES = {
     },
 }
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# -------------------------------------------------
+# CLOUDINARY CONFIG
+# -------------------------------------------------
 
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
+
+import cloudinary
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+    api_key=CLOUDINARY_STORAGE["API_KEY"],
+    api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+    secure=True,
+)
+
+# -------------------------------------------------
+# CART
+# -------------------------------------------------
+
+CART_SESSION_ID = "carrito"
+
+# -------------------------------------------------
+# DEFAULT
+# -------------------------------------------------
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

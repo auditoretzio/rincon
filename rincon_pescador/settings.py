@@ -30,9 +30,14 @@ SECRET_KEY = os.environ.get(
 )
 
 # ⚠️ DEBUG solo para depurar (luego volver a False)
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "rincon-pescador.onrender.com",  # tu dominio real
+    ".onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
@@ -190,3 +195,7 @@ if os.environ.get("CLOUDINARY_URL"):
 else:
     print("[CLOUDINARY CHECK] CLOUDINARY_URL missing")
 
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

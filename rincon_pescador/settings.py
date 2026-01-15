@@ -185,10 +185,8 @@ CART_SESSION_ID = "carrito"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-sys.stderr.write(
-    f"[CLOUDINARY CHECK] name={CLOUDINARY_STORAGE['CLOUD_NAME']} "
-    f"key={'OK' if CLOUDINARY_STORAGE['API_KEY'] else 'MISSING'}\n"
-)
-sys.stderr.flush()
-
+if os.environ.get("CLOUDINARY_URL"):
+    print("[CLOUDINARY CHECK] CLOUDINARY_URL loaded")
+else:
+    print("[CLOUDINARY CHECK] CLOUDINARY_URL missing")
 

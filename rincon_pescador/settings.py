@@ -298,26 +298,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Media
-MEDIA_URL = '/media/'
-
-# Storages (Django 4.2+)
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-# WhiteNoise compatibility (REQUIRED)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CART_SESSION_ID = 'carrito'
-
-
-

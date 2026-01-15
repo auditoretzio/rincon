@@ -31,11 +31,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-tu-clave-secr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # Temporalmente para depuración, luego restringir a .onrender.com
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    ALLOWED_HOSTS.append('.onrender.com')
 
 
 CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app', 'https://*.ngrok.io', 'https://*.ngrok-free.dev']
@@ -157,16 +158,18 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Explicit configuration for Cloudinary library
-CLOUDINARY_CLOUD_NAME = CLOUDINARY_STORAGE['CLOUD_NAME']
-CLOUDINARY_API_KEY = CLOUDINARY_STORAGE['API_KEY']
-CLOUDINARY_API_SECRET = CLOUDINARY_STORAGE['API_SECRET']
+# Verificación de variables en logs de Render
+if not CLOUDINARY_STORAGE['CLOUD_NAME']:
+    print("WARNING: CLOUDINARY_CLOUD_NAME no está configurada en las variables de entorno!")
+else:
+    print(f"Cloudinary configurado para el cloud: {CLOUDINARY_STORAGE['CLOUD_NAME']}")
 
+# Explicit configuration for Cloudinary library
 import cloudinary
 cloudinary.config(
-    cloud_name=CLOUDINARY_CLOUD_NAME,
-    api_key=CLOUDINARY_API_KEY,
-    api_secret=CLOUDINARY_API_SECRET,
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
     secure=True
 )
 

@@ -157,12 +157,6 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 # Cloudinary handles storage, but MEDIA_ROOT is still needed for some Django internals
 
-# Cloudinary Settings
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
 
 import sys
 # Verificación de variables en logs de Render (stderr para evitar buffering)
@@ -174,12 +168,6 @@ sys.stderr.flush()
 
 # Explicit configuration for Cloudinary library
 import cloudinary
-cloudinary.config(
-    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.environ.get('CLOUDINARY_API_KEY'),
-    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
-    secure=True
-)
 
 # Storages configuration for Django 4.2+
 STORAGES = {
@@ -197,3 +185,4 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CART_SESSION_ID = 'carrito'
+

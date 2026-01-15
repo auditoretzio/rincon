@@ -295,28 +295,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Media files (uploads)
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-# Cloudinary handles storage, but MEDIA_ROOT is still needed for some Django internals
+# Media
+# En producción Render NO sirve media local
+MEDIA_URL = '/media/'
 
-
-import sys
-# Verificación de variables en logs de Render (stderr para evitar buffering)
-if not CLOUDINARY_STORAGE['CLOUD_NAME']:
-    sys.stderr.write("!!! [CLOUDINARY ERROR] CLOUDINARY_CLOUD_NAME no detectada !!!\n")
-else:
-    sys.stderr.write(f"--- [CLOUDINARY OK] Detectada cuenta: {CLOUDINARY_STORAGE['CLOUD_NAME']} ---\n")
-sys.stderr.flush()
-
-# Explicit configuration for Cloudinary library
-import cloudinary
-
-# Storages configuration for Django 4.2+
+# Storages (Django 4.2+)
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -327,10 +314,6 @@ STORAGES = {
 }
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CART_SESSION_ID = 'carrito'
-
-

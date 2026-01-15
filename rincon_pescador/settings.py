@@ -18,7 +18,8 @@ SECRET_KEY = os.environ.get(
     "django-insecure-tu-clave-secreta-aqui"
 )
 
-DEBUG = "RENDER" not in os.environ
+#DEBUG = "RENDER" not in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -143,3 +144,4 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+

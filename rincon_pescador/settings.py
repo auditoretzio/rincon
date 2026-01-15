@@ -163,22 +163,17 @@ STORAGES = {
 }
 
 # -------------------------------------------------
-# CLOUDINARY CONFIG
+# CLOUDINARY (USANDO CLOUDINARY_URL)
 # -------------------------------------------------
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
-}
-
 import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
-    api_key=CLOUDINARY_STORAGE["API_KEY"],
-    api_secret=CLOUDINARY_STORAGE["API_SECRET"],
-    secure=True,
+    secure=True
 )
+
 
 # -------------------------------------------------
 # CART
@@ -197,3 +192,4 @@ sys.stderr.write(
     f"key={'OK' if CLOUDINARY_STORAGE['API_KEY'] else 'MISSING'}\n"
 )
 sys.stderr.flush()
+

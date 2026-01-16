@@ -1,90 +1,1205 @@
-
 {% extends 'tienda/base.html' %}
 {% load static %}
 
 {% block title %}Inicio - El Rincón del Pescador{% endblock %}
 
 {% block content %}
-<section class="hero-modern" style="background: linear-gradient(120deg, #0a3d62 60%, #3c6382 100%); color: #fff; padding: 60px 0 40px 0;">
-    <div class="container text-center">
-        <h1 style="font-size: 3rem; font-weight: bold; margin-bottom: 10px;">El Rincón del Pescador</h1>
-        <p style="font-size: 1.3rem; margin-bottom: 25px;">Todo para tu próxima aventura de pesca</p>
-        <a href="#productos" class="btn btn-lg btn-warning" style="font-weight: bold;">Ver Productos</a>
+<!-- Hero Section - Diseño Moderno -->
+<section class="hero-modern">
+    <!-- Partículas flotantes -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
+
+    <!-- Elementos de pesca abstractos -->
+    <div class="abstract-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="hero-content-modern">
+        <!-- Título con efecto de gradiente -->
+        <div class="title-gradient">
+            <h1 class="hero-title-modern">
+                <span class="title-line title-top">EL RINCÓN</span>
+                <span class="title-line title-bottom">DEL PESCADOR</span>
+            </h1>
+            <div class="title-underline"></div>
+        </div>
+
+        <!-- Subtítulo dinámico -->
+        <div class="dynamic-subtitle">
+            <div class="subtitle-container">
+                <span class="subtitle-text">Equipamiento</span>
+                <div class="subtitle-rotator">
+                    <div class="rotating-words">
+                        <span class="word">profesional</span>
+                        <span class="word">premium</span>
+                        <span class="word">especializado</span>
+                        <span class="word">de calidad</span>
+                    </div>
+                </div>
+                <span class="subtitle-text">para pescadores</span>
+            </div>
+        </div>
+
+        <!-- Estadísticas animadas -->
+        <div class="animated-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="{{ total_productos|default:'150' }}">0</div>
+                    <div class="stat-label">Productos</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📁</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="{{ total_categorias|default:'12' }}">0</div>
+                    <div class="stat-label">Categorías</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="{{ productos_destacados|length|default:'25' }}">0</div>
+                    <div class="stat-label">Destacados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+            <a href="#productos" class="action-btn btn-primary">
+                <span class="btn-text">Ver Catálogo</span>
+                <span class="btn-icon">→</span>
+                <div class="btn-shine"></div>
+            </a>
+
+            <a href="#categorias" class="action-btn btn-secondary">
+                <span class="btn-text">Explorar Categorías</span>
+                <span class="btn-icon">↓</span>
+            </a>
+        </div>
+
+        <!-- Indicador de scroll -->
+        <div class="scroll-hint">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span class="hint-text">Desplázate para descubrir</span>
+        </div>
+    </div>
+
+    <!-- Capa de superposición -->
+    <div class="hero-overlay"></div>
 </section>
 
-<section id="categorias" class="py-5 bg-light">
+<!-- Categorías Section -->
+<section id="categorias" class="section">
     <div class="container">
-        <h2 class="mb-4 text-center" style="font-weight: bold;">Nuestras Categorías</h2>
-        <div class="row justify-content-center">
+        <h2 class="section-title">Nuestras Categorías</h2>
+        <div class="categories-grid">
             {% for categoria in categorias %}
-            <div class="col-6 col-md-3 mb-4">
-                <a href="{% url 'tienda:categoria' categoria.id %}" class="card h-100 shadow-sm text-center category-card-modern" style="text-decoration:none; color:inherit;">
-                    <div class="card-body">
-                        <div style="font-size:2.5rem;">📦</div>
-                        <h5 class="card-title mt-2">{{ categoria.nombre }}</h5>
-                        <p class="card-text text-muted">{{ categoria.productos.count }} productos</p>
-                    </div>
-                </a>
-            </div>
+            <a href="{% url 'tienda:categoria' categoria.id %}" class="category-card">
+                <div class="category-icon">📦</div>
+                <h3>{{ categoria.nombre }}</h3>
+                <p>{{ categoria.productos.count }} productos</p>
+            </a>
             {% empty %}
-            <div class="col-12"><p class="text-center text-muted">No hay categorías disponibles.</p></div>
+            <p class="empty-message">No hay categorías disponibles.</p>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<section id="productos" class="py-5">
+<!-- Productos Destacados Section -->
+<section id="productos" class="section section-alt">
     <div class="container">
-        <h2 class="mb-4 text-center" style="font-weight: bold;">Productos Destacados</h2>
-        <div class="row justify-content-center">
+        <h2 class="section-title">Productos Destacados</h2>
+        <div class="products-grid">
             {% for producto in productos_destacados %}
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card h-100 shadow product-card-modern">
-                    <a href="{% url 'tienda:producto_detalle' producto.id %}" class="product-link">
-                        {% if producto.imagen %}
-                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}" style="object-fit:cover; height:220px;">
-                        {% else %}
-                        <div class="d-flex align-items-center justify-content-center" style="height:220px; background:#f1f2f6; font-size:3rem;">
-                            🎣
-                        </div>
-                        {% endif %}
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="badge bg-info mb-2" style="width:fit-content;">{{ producto.categoria.nombre }}</span>
-                        <h5 class="card-title" style="font-weight:bold;">{{ producto.nombre }}</h5>
-                        <p class="card-text text-truncate" title="{{ producto.descripcion|default:'Sin descripción' }}">
-                            {{ producto.descripcion|truncatewords:20|default:"Producto de pesca de alta calidad. ¡Descúbrelo!" }}
-                        </p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <span class="h5 mb-0 text-success">${{ producto.precio }}</span>
-                            <form action="{% url 'tienda:agregar_carrito' producto.id %}" method="post" class="d-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="cantidad" value="1">
-                                <button type="submit" class="btn btn-sm btn-primary" title="Agregar al Carrito">
-                                    🛒
-                                </button>
-                            </form>
-                        </div>
-                        {% if producto.destacado %}
-                      <!--  <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Destacado</span> -->
-                        {% endif %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <div class="product-placeholder">
+                        <span>🎣</span>
+                    </div>
+                    {% endif %}
+                    {% if producto.destacado %}
+                    <span class="badge badge-featured">Destacado</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <span class="product-category">{{ producto.categoria.nombre }}</span>
+                    <h3 class="product-name">{{ producto.nombre }}</h3>
+                    <div class="product-description">
+                        {{ producto.descripcion|truncatewords:15|default:"Producto de pesca de alta calidad." }}
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">${{ producto.precio }}</span>
+                        <button class="add-to-cart-btn" data-product-id="{{ producto.id }}">
+                            🛒 Agregar
+                        </button>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12"><p class="text-center text-muted">No hay productos destacados en este momento.</p></div>
+            <div class="empty-state">
+                <p class="empty-message">No hay productos destacados en este momento.</p>
+                <p class="empty-hint">Marca productos como destacados desde el panel de administración.</p>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<section class="py-5 bg-primary text-white">
-    <div class="container text-center">
-        <h2 class="mb-3">¿Listo para tu próxima pesca?</h2>
-        <p class="mb-4">Encuentra todo el equipamiento que necesitas en nuestra tienda</p>
-        <a href="/admin/" class="btn btn-light btn-lg">Gestionar Productos</a>
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>¿Listo para tu próxima aventura de pesca?</h2>
+            <p>Descubre nuestro catálogo completo de productos especializados</p>
+            <a href="#productos" class="btn-cta">Explorar Todo</a>
+        </div>
     </div>
 </section>
-{% endblock %}
 
+<style>
+    /* ===== HERO MODERNO ===== */
+    .hero-modern {
+        position: relative;
+        height: 100vh;
+        min-height: 850px;
+        background: linear-gradient(135deg,
+                #001F3F 0%,
+                #003366 25%,
+                #00509E 50%,
+                #0066CC 75%,
+                #0080FF 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: white;
+    }
+
+    /* Partículas flotantes */
+    .particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: particle-float 15s infinite linear;
+    }
+
+    .particle:nth-child(1) {
+        width: 20px;
+        height: 20px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .particle:nth-child(2) {
+        width: 15px;
+        height: 15px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 3s;
+    }
+
+    .particle:nth-child(3) {
+        width: 25px;
+        height: 25px;
+        bottom: 30%;
+        left: 20%;
+        animation-delay: 6s;
+    }
+
+    .particle:nth-child(4) {
+        width: 10px;
+        height: 10px;
+        top: 40%;
+        right: 25%;
+        animation-delay: 9s;
+    }
+
+    .particle:nth-child(5) {
+        width: 18px;
+        height: 18px;
+        bottom: 20%;
+        right: 10%;
+        animation-delay: 12s;
+    }
+
+    @keyframes particle-float {
+
+        0%,
+        100% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.3;
+        }
+
+        25% {
+            transform: translateY(-30px) translateX(20px);
+            opacity: 0.6;
+        }
+
+        50% {
+            transform: translateY(0) translateX(40px);
+            opacity: 0.3;
+        }
+
+        75% {
+            transform: translateY(30px) translateX(20px);
+            opacity: 0.6;
+        }
+    }
+
+    /* Formas abstractas */
+    .abstract-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .shape {
+        position: absolute;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        animation: shape-rotate 30s infinite linear;
+    }
+
+    .shape-1 {
+        width: 400px;
+        height: 400px;
+        top: -200px;
+        right: -200px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    .shape-2 {
+        width: 300px;
+        height: 300px;
+        bottom: -150px;
+        left: -150px;
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        animation-delay: -15s;
+    }
+
+    .shape-3 {
+        width: 200px;
+        height: 200px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border-style: dashed;
+        animation: shape-pulse 4s infinite ease-in-out;
+    }
+
+    @keyframes shape-rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes shape-pulse {
+
+        0%,
+        100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.1;
+        }
+
+        50% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0.3;
+        }
+    }
+
+    /* Contenido del hero */
+    .hero-content-modern {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        max-width: 1200px;
+        padding: 2rem;
+        width: 100%;
+    }
+
+    /* Título con gradiente */
+    .title-gradient {
+        margin-bottom: 3rem;
+    }
+
+    .hero-title-modern {
+        font-size: 4.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .title-line {
+        display: block;
+    }
+
+    .title-top {
+        background: linear-gradient(45deg, #FFFFFF, #A3D5FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .title-bottom {
+        background: linear-gradient(45deg, #A3D5FF, #66B2FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+
+    .title-underline {
+        width: 200px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #66B2FF, transparent);
+        margin: 1rem auto;
+        border-radius: 2px;
+        animation: underline-glow 3s infinite ease-in-out;
+    }
+
+    @keyframes underline-glow {
+
+        0%,
+        100% {
+            opacity: 0.5;
+            width: 200px;
+        }
+
+        50% {
+            opacity: 1;
+            width: 300px;
+        }
+    }
+
+    /* Subtítulo dinámico */
+    .dynamic-subtitle {
+        margin-bottom: 4rem;
+    }
+
+    .subtitle-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .subtitle-rotator {
+        height: 2.5rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .rotating-words {
+        animation: word-rotate 12s infinite;
+    }
+
+    @keyframes word-rotate {
+
+        0%,
+        20% {
+            transform: translateY(0);
+        }
+
+        25%,
+        45% {
+            transform: translateY(-2.5rem);
+        }
+
+        50%,
+        70% {
+            transform: translateY(-5rem);
+        }
+
+        75%,
+        95% {
+            transform: translateY(-7.5rem);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .word {
+        display: block;
+        height: 2.5rem;
+        color: #66B2FF;
+        font-weight: 600;
+    }
+
+    /* Estadísticas animadas */
+    .animated-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-bottom: 4rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+        min-width: 200px;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: #66B2FF;
+        box-shadow: 0 10px 30px rgba(102, 178, 255, 0.2);
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        animation: icon-float 3s infinite ease-in-out;
+    }
+
+    @keyframes icon-float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .stat-content {
+        text-align: left;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #66B2FF;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Botones de acción */
+    .action-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-bottom: 4rem;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem 2.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #FF6B35, #FF9E00);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-shine {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent);
+        transition: left 0.6s ease;
+    }
+
+    .btn-primary:hover .btn-shine {
+        left: 100%;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+        transform: translateY(-3px);
+    }
+
+    .btn-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .action-btn:hover .btn-icon {
+        transform: translateX(5px);
+    }
+
+    /* Indicador de scroll */
+    .scroll-hint {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .mouse {
+        width: 30px;
+        height: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        position: relative;
+    }
+
+    .wheel {
+        width: 4px;
+        height: 10px;
+        background: #66B2FF;
+        border-radius: 2px;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: scroll-wheel 2s infinite;
+    }
+
+    @keyframes scroll-wheel {
+        0% {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+        }
+    }
+
+    /* Capa de superposición */
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+            radial-gradient(circle at 20% 80%, rgba(0, 80, 158, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0, 102, 204, 0.3) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+        .hero-modern {
+            min-height: 800px;
+        }
+
+        .hero-title-modern {
+            font-size: 2.8rem;
+        }
+
+        .subtitle-container {
+            font-size: 1.4rem;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .animated-stats {
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            min-width: 150px;
+            padding: 1rem 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+        }
+    }
+
+    /* ===== ESTILOS PARA LAS OTRAS SECCIONES ===== */
+    .section {
+        padding: 5rem 0;
+    }
+
+    .section-alt {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.8rem;
+        color: #003366;
+        margin-bottom: 3rem;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #003366, #0080FF);
+        border-radius: 2px;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .category-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        border-color: #0080FF;
+    }
+
+    .category-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        animation: icon-float 3s infinite ease-in-out;
+    }
+
+    .category-card h3 {
+        font-size: 1.5rem;
+        color: #003366;
+        margin-bottom: 0.5rem;
+    }
+
+    .category-card p {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+        height: 220px;
+        background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .product-placeholder {
+        font-size: 4.5rem;
+        opacity: 0.3;
+    }
+
+    .badge-featured {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: linear-gradient(45deg, #FF6B35, #FF9E00);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .product-info {
+        padding: 1.8rem;
+    }
+
+    .product-category {
+        display: inline-block;
+        background: #e6f2ff;
+        color: #0080FF;
+        padding: 0.3rem 1rem;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .product-name {
+        font-size: 1.4rem;
+        color: #003366;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+    }
+
+    .product-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        height: 4.5em;
+        overflow: hidden;
+    }
+
+    .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #003366;
+    }
+
+    .add-to-cart-btn {
+        background: linear-gradient(45deg, #0080FF, #00509E);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .add-to-cart-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #003366, #00509E);
+        color: white;
+        padding: 6rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(102, 178, 255, 0.2) 0%, transparent 50%);
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .cta-content h2 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+
+    .cta-content p {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    .btn-cta {
+        display: inline-block;
+        background: linear-gradient(45deg, #FF6B35, #FF9E00);
+        color: white;
+        padding: 1.2rem 3rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .empty-message {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        grid-column: 1 / -1;
+        padding: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-hint {
+        color: #888;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+        }
+
+        .container {
+            padding: 0 1.5rem;
+        }
+
+        .categories-grid,
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-content h2 {
+            font-size: 2.2rem;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Animación de estadísticas
+        const statNumbers = document.querySelectorAll('.stat-number');
+
+        statNumbers.forEach(stat => {
+            const target = parseInt(stat.dataset.count);
+            let current = 0;
+            const increment = target / 50;
+            const duration = 1500;
+
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    const counter = () => {
+                        current += increment;
+                        if (current < target) {
+                            stat.textContent = Math.floor(current);
+                            setTimeout(counter, duration / 50);
+                        } else {
+                            stat.textContent = target;
+                        }
+                    };
+                    counter();
+                    observer.disconnect();
+                }
+            }, { threshold: 0.5 });
+
+            observer.observe(stat);
+        });
+
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    e.preventDefault();
+                    const navbarHeight = 80;
+                    const targetPosition = targetElement.offsetTop - navbarHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Manejo de botones de agregar al carrito
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+                const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+
+                // Enviar petición al servidor
+                fetch(`/carrito/agregar/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Animación del botón
+                            this.style.transform = 'scale(0.95)';
+                            this.innerHTML = '✓ Agregado';
+                            this.style.background = 'linear-gradient(45deg, #4CAF50, #2E7D32)';
+
+                            setTimeout(() => {
+                                this.style.transform = 'scale(1)';
+                                this.innerHTML = '🛒 Agregar';
+                                this.style.background = 'linear-gradient(45deg, #0080FF, #00509E)';
+                            }, 1500);
+
+                            // Actualizar contador del carrito (Server-side truth)
+                            const cartBadge = document.querySelector('.cart-badge');
+                            if (cartBadge) {
+                                cartBadge.textContent = data.cart_count;
+                                cartBadge.style.animation = 'none';
+                                void cartBadge.offsetWidth;
+                                cartBadge.style.animation = 'bounce 0.5s ease';
+                            }
+
+                            // Mostrar notificación
+                            showNotification(`"${productName}" agregado al carrito`);
+                        } else {
+                            showNotification('Error al agregar el producto al carrito');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error de conexión al agregar al carrito');
+                    });
+            });
+        });
+
+        // Función para obtener el token CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+        `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Animación para el contador del carrito
+        const style = document.createElement('style');
+        style.textContent = `
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+        document.head.appendChild(style);
+
+        // Efecto de partículas interactivas
+        const particles = document.querySelectorAll('.particle');
+
+        particles.forEach(particle => {
+            particle.addEventListener('mouseenter', function () {
+                this.style.background = 'rgba(255, 255, 255, 0.3)';
+                this.style.transform = 'scale(1.5)';
+            });
+
+            particle.addEventListener('mouseleave', function () {
+                this.style.background = 'rgba(255, 255, 255, 0.1)';
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Efecto parallax en formas abstractas
+        window.addEventListener('scroll', function () {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.shape');
+
+            shapes.forEach(shape => {
+                const speed = shape.classList.contains('shape-3') ? 0.2 : 0.5;
+                shape.style.transform = `rotate(${scrolled * speed}deg)`;
+            });
+        });
+
+        // Inicializar contador del carrito (opcional, ya lo hace Django en el render)
+        const cartBadge = document.querySelector('.cart-badge');
+        if (cartBadge && !cartBadge.textContent.trim()) {
+            // Si está vacío pero hay algo en localStorage podríamos recuperarlo, 
+            // pero lo ideal es confiar en la sesión de Django.
+        }
+    });
+</script>
+{% endblock %}

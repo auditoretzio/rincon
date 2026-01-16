@@ -5,6 +5,17 @@ from .models import Producto, Categoria, Orden, ItemOrden
 from .carrito import Carrito
 from .forms import OrdenForm, CantidadForm
 import urllib.parse
+from .models import Producto
+
+def home(request):
+    producto_destacado = Producto.objects.first()
+
+    context = {
+        "producto_destacado": producto_destacado,
+        "productos": Producto.objects.all(),
+    }
+    return render(request, "tienda/home.html", context)
+
 
 
 def index(request):
@@ -183,3 +194,4 @@ def cambiar_estado_orden(request, orden_id, nuevo_estado):
 def quienes_somos(request):
     """Vista de la página Quiénes Somos"""
     return render(request, 'tienda/quienes_somos.html')
+

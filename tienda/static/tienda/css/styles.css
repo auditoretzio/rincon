@@ -135,6 +135,13 @@ a {
     gap: var(--spacing-lg);
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    order: 2;
+}
+
 .nav-link {
     color: var(--text-white);
     font-weight: 500;
@@ -203,6 +210,12 @@ a {
 
 .cart-btn:active {
     transform: translateY(0);
+}
+
+.cart-btn span.btn-text {
+    margin-right: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .cart-icon {
@@ -908,6 +921,15 @@ a {
         backdrop-filter: blur(10px);
     }
 
+    .nav-actions {
+        order: 2;
+        gap: var(--spacing-sm);
+    }
+
+    .cart-btn span.btn-text {
+        display: none;
+    }
+
     .nav-menu.active {
         right: 0;
     }
@@ -1001,6 +1023,34 @@ a {
     width: 32px;
     height: 32px;
     display: block;
+}
+
+/* WhatsApp Contact Button in Product Detail */
+.btn-whatsapp-contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #25d366;
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-whatsapp-contact:hover {
+    background-color: #128c7e;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn-icon {
+    width: 24px;
+    height: 24px;
 }
 
 /* Product Gallery Thumbnails */

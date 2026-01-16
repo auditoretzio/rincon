@@ -16,5 +16,8 @@ urlpatterns = [
     path('orden-confirmada/<int:orden_id>/', views.orden_confirmada, name='orden_confirmada'),
     path('quienes-somos/', views.quienes_somos, name='quienes_somos'),
 
-    
+    # Administración de pedidos (Frontend)
+    path('dashboard/', views.orden_dashboard, name='orden_dashboard'),
+    path('dashboard/orden/<int:orden_id>/', views.orden_detalle_admin, name='orden_detalle_admin'),
+    path('dashboard/orden/<int:orden_id>/status/<str:nuevo_estado>/', views.cambiar_estado_orden, name='cambiar_estado_orden'),
 ]

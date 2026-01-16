@@ -28,45 +28,57 @@
 </head>
 
 <body>
+
     <header class="header">
         <nav class="navbar">
-            <div class="container">
+            <div class="container d-flex align-items-center justify-content-between">
+
+                <!-- LOGO (IZQUIERDA) -->
                 <a href="{% url 'tienda:index' %}" class="logo">
                     <span class="logo-icon">🎣</span>
                     <span class="logo-text">El Rincón del Pescador</span>
                 </a>
-                <button class="mobile-menu-btn" aria-label="Menú">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+
+                <!-- MENÚ (CENTRO) -->
                 <ul class="nav-menu">
                     <li><a href="{% url 'tienda:index' %}" class="nav-link">Inicio</a></li>
                     <li><a href="#productos" class="nav-link">Productos</a></li>
                     <li><a href="#categorias" class="nav-link">Categorías</a></li>
                     <li><a href="/admin/" class="nav-link admin-link">Admin</a></li>
-                    <li class="nav-item">
-                        <button class="cart-btn" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasCarrito" aria-controls="offcanvasCarrito"
-                            aria-label="Ver carrito">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="cart-icon" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
-                            {% if carrito|length > 0 %}
-                            <span class="cart-badge">{{ carrito|length }}</span>
-                            {% endif %}
-                        </button>
-                    </li>
                 </ul>
+
+                <!-- ACCIONES (DERECHA) -->
+                <div class="nav-actions">
+
+                    <!-- BOTÓN CARRITO -->
+                    <button class="cart-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito"
+                        aria-controls="offcanvasCarrito" aria-label="Ver carrito">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="cart-icon" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+
+                        <span class="cart-badge">
+                            {% if carrito|length > 0 %}{{ carrito|length }}{% endif %}
+                        </span>
+                    </button>
+
+                    <!-- MENÚ MOBILE -->
+                    <button class="mobile-menu-btn" aria-label="Menú">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+
             </div>
         </nav>
-
-        <!-- Offcanvas Carrito -->
     </header>
 
+    <!-- JS MENÚ MOBILE -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const menuBtn = document.querySelector('.mobile-menu-btn');
@@ -77,7 +89,6 @@
                 navMenu.classList.toggle('active');
             });
 
-            // Cerrar menú al hacer click en un link
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', () => {
                     menuBtn.classList.remove('active');
@@ -101,12 +112,18 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contacto</h4>
-                    <p>📧 info@rinconpescador.com.ar</p>
-                    <p>📱 +54 11 1234-5678</p>
+                    <p>📧 diegodelas924@gmail.com</p>
+                    <p>📱 +54 9 2245 47-1409</p>
+                    <p>📱 +54 9 11 3928-7123</p>
                 </div>
                 <div class="footer-section">
                     <h4>Información</h4>
                     <p><a href="{% url 'tienda:quienes_somos' %}" class="footer-link">Quiénes somos</a></p>
+                    <p>
+                        <a href="https://www.instagram.com/elrincondelpescador/" class="footer-link">
+                            @Elrincondelpescador
+                        </a>
+                    </p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -115,29 +132,26 @@
         </div>
     </footer>
 
-
-
-
-    <!-- Offcanvas Carrito (Moved to end of body for better z-index handling) -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
+    <!-- OFFCANVAS CARRITO -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasCarritoLabel">Tu Carrito</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title">Tu Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body">
             {% if carrito|length > 0 %}
             <ul class="list-group mb-3">
                 {% for item in carrito %}
-                <li class="list-group-item d-flex justify-content-between lh-sm">
+                <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <h6 class="my-0">{{ item.producto.nombre }}</h6>
-                        <small class="text-body-secondary">Cant: {{ item.cantidad }}</small>
+                        <small>Cant: {{ item.cantidad }}</small>
                     </div>
-                    <span class="text-body-secondary text-nowrap">${{ item.total_precio }}</span>
+                    <span>${{ item.total_precio }}</span>
                 </li>
                 {% endfor %}
                 <li class="list-group-item d-flex justify-content-between">
-                    <span>Total (ARG)</span>
+                    <strong>Total</strong>
                     <strong>${{ carrito.get_total_price }}</strong>
                 </li>
             </ul>
@@ -146,41 +160,22 @@
                 <a href="{% url 'tienda:procesar_orden' %}" class="btn btn-success">Iniciar Pedido</a>
             </div>
             {% else %}
-            <div class="text-center py-5">
-                <p class="mb-3">Tu carrito está vacío</p>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas">Seguir Mirando</button>
-            </div>
+            <p class="text-center py-4">Tu carrito está vacío</p>
             {% endif %}
         </div>
     </div>
 
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register("{% static 'tienda/sw.js' %}")
-                    .then((registration) => {
-                        console.log('Service Worker registrado con éxito:', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.log('Error al registrar Service Worker:', error);
-                    });
-            });
-        }
-    </script>
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <!-- Botón de WhatsApp Flotante -->
-    <a href="https://wa.me/5492245471409" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
-        aria-label="Contactar por WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-whatsapp"
-            viewBox="0 0 16 16">
-            <path
-                d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.14-1.086c1.17.637 2.483.973 3.81.973h.005c4.367 0 7.926-3.558 7.93-7.93a7.858 7.858 0 0 0-2.327-5.557zM7.994 14.522a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/5492245471409" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 32 32" class="whatsapp-icon">
+            <path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.733 5.485 2.022 7.795l-2.022 7.387 7.561-1.983c2.355 1.503 5.143 2.383 8.139 2.383 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.608 0-5.048-0.781-7.091-2.122l-0.509-0.334-4.515 1.183 1.202-4.39-0.366-0.582c-1.423-2.261-2.253-4.945-2.253-7.821 0-7.351 5.982-13.333 13.333-13.333s13.333 5.982 13.333 13.333c0 7.351-5.982 13.333-13.333 13.333zM22.518 19.333c-0.358-0.179-2.116-1.044-2.446-1.164-0.329-0.12-0.57-0.179-0.809 0.179-0.239 0.358-0.927 1.164-1.136 1.403-0.209 0.239-0.418 0.269-0.776 0.090-0.358-0.179-1.512-0.557-2.881-1.779-1.065-0.95-1.783-2.122-1.993-2.481-0.209-0.358-0.022-0.552 0.157-0.731 0.161-0.161 0.358-0.418 0.537-0.627 0.179-0.209 0.239-0.358 0.358-0.597 0.12-0.239 0.060-0.448-0.030-0.627-0.090-0.179-0.809-1.947-1.107-2.665-0.291-0.699-0.585-0.605-0.809-0.616-0.209-0.010-0.448-0.012-0.687-0.012-0.239 0-0.627 0.090-0.955 0.448-0.329 0.358-1.254 1.224-1.254 2.986s1.284 3.463 1.463 3.702c0.179 0.239 2.527 3.858 6.121 5.409 0.855 0.369 1.523 0.59 2.043 0.755 0.858 0.272 1.64 0.234 2.257 0.142 0.688-0.103 2.116-0.865 2.416-1.701 0.299-0.836 0.299-1.552 0.209-1.701-0.089-0.149-0.328-0.239-0.687-0.418z" fill="currentColor"></path>
         </svg>
     </a>
-</body>
 
+    <div style="display:none;">{% csrf_token %}</div>
+
+</body>
 </html>

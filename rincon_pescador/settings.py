@@ -199,3 +199,8 @@ else:
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Configuración de Autenticación
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'tienda:index'
+LOGOUT_REDIRECT_URL = 'tienda:index'

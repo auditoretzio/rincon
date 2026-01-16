@@ -1,24 +1,56 @@
 {% extends 'tienda/base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12 text-center">
-        <h1 class="text-success">¡Pedido Confirmado!</h1>
-        <p class="lead">Gracias por tu solicitud de pedido, {{ orden.nombre }}.</p>
+<section class="section confirmation-section">
+    <div class="container text-center">
+        <div class="confirmation-card mx-auto" style="max-width: 700px;">
+            <div class="confirmation-icon mb-4">
+                <div class="success-checkmark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none"
+                        stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+            </div>
 
-        <div class="alert alert-info">
-            <strong>Número de Orden: #{{ orden.id }}</strong>
+            <h1 class="display-5 mb-3">¡Pedido Recibido!</h1>
+            <p class="lead mb-4">Gracias <strong>{{ orden.nombre }}</strong>. Tu pedido <strong>#{{ orden.id }}</strong>
+                ha sido registrado correctamente.</p>
+
+            <div class="summary-box mb-5">
+                <div class="whatsapp-alert p-4 mb-4">
+                    <h5>¿Quieres agilizar tu pedido?</h5>
+                    <p>Envíanos el resumen de tu compra por WhatsApp para coordinar el retiro más rápido.</p>
+                    <a href="{{ whatsapp_url }}" target="_blank" class="btn btn-whatsapp-confirm w-100">
+                        <svg viewBox="0 0 32 32" width="20" height="20" class="me-2">
+                            <path
+                                d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.733 5.485 2.022 7.795l-2.022 7.387 7.561-1.983c2.355 1.503 5.143 2.383 8.139 2.383 8.837 0 16-7.163 16-16s-7.163-16-16-16z"
+                                fill="currentColor"></path>
+                        </svg>
+                        Enviar Resumen por WhatsApp
+                    </a>
+                </div>
+
+                <div class="payment-details-card p-4">
+                    <h5 class="mb-3 text-start">📦 Próximos pasos:</h5>
+                    <ul class="text-start custom-list">
+                        <li><strong>Retiro en Local:</strong> Acércate a nuestro local para retirar y abonar tus
+                            productos.</li>
+                        <li><strong>Transferencia:</strong> Puedes adelantar el pago vía CBU (Solicitar por WhatsApp).
+                        </li>
+                        <li><strong>Comprobante:</strong> Si transfieres, envía el comprobante al
+                            <strong>2245471409</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="confirmation-actions d-flex gap-3 justify-content-center">
+                <a href="{% url 'tienda:index' %}" class="btn btn-outline-secondary btn-lg px-4">Volver al Inicio</a>
+                <a href="https://www.instagram.com/Elri.ncondelpescador/" target="_blank"
+                    class="btn btn-instagram-follow btn-lg px-4">Seguinos en Instagram</a>
+            </div>
         </div>
-
-        <p>Hemos recibido tu pedido correctamente. Por favor, acércate a nuestro local para abonar y retirar tus
-            productos.</p>
-
-        <p>o podrias abonar el pedido a traves de transferencia bancaria a la cuenta de: (datos de la cuenta)
-            <strong> </strong>
-            una vez abonado, enviar comprobante de pago a <strong>asdasd@gmail.com o 2245471409</strong>
-        </p>
-
-        <a href="{% url 'tienda:index' %}" class="btn btn-primary">Volver al Inicio</a>
     </div>
-</div>
+</section>
 {% endblock %}

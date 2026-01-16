@@ -1,0 +1,79 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+<section class="section detail-dashboard-section">
+    <div class="container">
+        <div class="mb-4">
+            <a href="{% url 'tienda:orden_dashboard' %}" class="text-decoration-none">← Volver al Dashboard</a>
+        </div>
+
+        <div class="row">
+            <!-- Detalle de la Orden -->
+            <div class="col-lg-8">
+                <div class="checkout-card mb-4">
+                    <div class="checkout-card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Orden #{{ orden.id }}</h3>
+                        <span class="badge-status status-{{ orden.estado|lower }}">{{ orden.get_estado_display }}</span>
+                    </div>
+                    <div class="checkout-card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-end">Precio</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in orden.items.all %}
+                                    <tr>
+                                        <td>{{ item.producto.nombre }}</td>
+                                        <td class="text-center">{{ item.cantidad }}</td>
+                                        <td class="text-end">${{ item.precio }}</td>
+                                        <td class="text-end">${{ item.get_cost }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="3" class="text-end">Total</th>
+                                        <th class="text-end text-primary fs-4">${{ orden.monto_total }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información del Cliente -->
+            <div class="col-lg-4">
+                <div class="checkout-card mb-4">
+                    <div class="checkout-card-header">
+                        <h3 class="mb-0">Cliente</h3>
+                    </div>
+                    <div class="checkout-card-body">
+                        <p><strong>Nombre:</strong> {{ orden.nombre }}</p>
+                        <p><strong>Email:</strong> {{ orden.email }}</p>
+                        <p><strong>Teléfono:</strong> <a href="tel:{{ orden.telefono }}">{{ orden.telefono }}</a></p>
+                        <hr>
+                        <p><strong>Fecha:</strong> {{ orden.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <h5 class="mb-3">Cambiar Estado</h5>
+                    <a href="{% url 'tienda:cambiar_estado_orden' orden.id 'PREPARACION' %}"
+                        class="btn btn-outline-warning">📦 En Preparación</a>
+                    <a href="{% url 'tienda:cambiar_estado_orden' orden.id 'LISTO' %}" class="btn btn-outline-info">✅
+                        Listo para Retirar</a>
+                    <a href="{% url 'tienda:cambiar_estado_orden' orden.id 'ENTREGADO' %}"
+                        class="btn btn-success text-white">🤝 Entregado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

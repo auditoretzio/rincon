@@ -55,9 +55,11 @@ class Carrito:
             carrito[str(producto.id)]['producto'] = producto
 
         for item in carrito.values():
-            item['precio'] = Decimal(item['precio'])
-            item['total_precio'] = item['precio'] * item['cantidad']
-            yield item
+            # Solo devolver items cuyo producto aún exista en la DB
+            if 'producto' in item:
+                item['precio'] = Decimal(item['precio'])
+                item['total_precio'] = item['precio'] * item['cantidad']
+                yield item
 
     def __len__(self):
         """

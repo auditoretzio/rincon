@@ -1,51 +1,120 @@
 {% extends 'tienda/base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h2>Tu Carrito de Compras</h2>
+<section class="section cart-section">
+    <div class="container">
+        <h1 class="section-title">Tu Carrito de Compras</h1>
+
         {% if carrito|length > 0 %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in carrito %}
-                {% with producto=item.producto %}
-                <tr>
-                    <td>{{ producto.nombre }}</td>
-                    <td>{{ item.cantidad }}</td>
-                    <td>${{ item.precio }}</td>
-                    <td>${{ item.total_precio }}</td>
-                    <td>
-                        <a href="{% url 'tienda:eliminar_carrito' producto.id %}"
-                            class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
-                </tr>
-                {% endwith %}
-                {% endfor %}
-                <tr>
-                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                    <td><strong>${{ carrito.get_total_price }}</strong></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="text-end">
-            <a href="{% url 'tienda:index' %}" class="btn btn-secondary">Seguir Comprando</a>
-            <a href="{% url 'tienda:procesar_orden' %}" class="btn btn-success">Generar Solicitud de Pedido (Pagar en
-                Local)</a>
+        <div class="cart-grid">
+            <!-- Columna Izquierda: Items -->
+            <div class="cart-items-column">
+                <div class="cart-items-header">
+                    <span>Producto</span>
+                    <span class="text-center">Cantidad</span>
+                    <span class="text-end">Subtotal</span>
+                </div>
+
+                <div class="cart-items-list">
+                    {% for item in carrito %}
+                    {% with producto=item.producto %}
+                    <div class="cart-item-card">
+                        <div class="cart-item-main">
+                            <div class="cart-item-image">
+                                {% if producto.imagen %}
+                                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                                {% else %}
+                                <div class="item-placeholder">🎣</div>
+                                {% endif %}
+                            </div>
+                            <div class="cart-item-info">
+                                <h3 class="item-name">{{ producto.nombre }}</h3>
+                                <p class="item-category">{{ producto.categoria.nombre }}</p>
+                                <span class="item-unit-price">${{ item.precio }} c/u</span>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-quantity text-center">
+                            <span class="quantity-badge">{{ item.cantidad }}</span>
+                        </div>
+
+                        <div class="cart-item-subtotal text-end">
+                            <span class="subtotal-amount">${{ item.total_precio }}</span>
+                            <a href="{% url 'tienda:eliminar_carrito' producto.id %}" class="remove-item"
+                                title="Eliminar del carrito">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+
+                <div class="cart-footer-actions">
+                    <a href="{% url 'tienda:index' %}" class="btn btn-secondary">
+                        ← Continuar Comprando
+                    </a>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Resumen -->
+            <div class="cart-summary-column">
+                <div class="cart-summary-card">
+                    <h3>Resumen del Carrito</h3>
+
+                    <div class="summary-row">
+                        <span>Productos ({{ carrito|length }})</span>
+                        <span>${{ carrito.get_total_price }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Envío</span>
+                        <span class="text-success">Gratis / Retiro local</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-total-row">
+                        <span>Total estimado</span>
+                        <span class="total-price">${{ carrito.get_total_price }}</span>
+                    </div>
+
+                    <div class="cart-cta">
+                        <a href="{% url 'tienda:procesar_orden' %}" class="btn btn-primary btn-lg w-100 mb-3">
+                            Iniciar mi Pedido 🎣
+                        </a>
+                        <p class="cta-note"><small>Paga al retirar en nuestro local</small></p>
+                    </div>
+
+                    <div class="cart-trust-badges">
+                        <div class="trust-badge">
+                            <span class="badge-icon">📍</span>
+                            <span>Retiro en Dolores</span>
+                        </div>
+                        <div class="trust-badge">
+                            <span class="badge-icon">🤝</span>
+                            <span>Compra Segura</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {% else %}
-        <p>Tu carrito está vacío.</p>
-        <a href="{% url 'tienda:index' %}" class="btn btn-primary">Ir a Comprar</a>
+        <div class="empty-cart-state">
+            <div class="empty-icon">🛒</div>
+            <h2>Tu carrito está vacío</h2>
+            <p>¡Explora nuestros productos y empieza a equiparte para la pesca!</p>
+            <a href="{% url 'tienda:index' %}" class="btn btn-primary btn-lg">Explorar Productos</a>
+        </div>
         {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}

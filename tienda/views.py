@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Producto, Categoria, Orden, ItemOrden
 from .carrito import Carrito
 from .forms import OrdenForm, CantidadForm
+import urllib.parse
 
 
 def index(request):
@@ -61,6 +64,13 @@ def agregar_carrito(request, producto_id):
     else:
         # Si no se envía formulario (por ejemplo desde el catálogo), añadir 1
         carrito.add(producto=producto, cantidad=1)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'status': 'success',
+            'cart_count': len(carrito),
+            'product_name': producto.nombre
+        })
         
     return redirect('tienda:ver_carrito')
 
@@ -112,7 +122,62 @@ def procesar_orden(request):
 def orden_confirmada(request, orden_id):
     """Vista de confirmación de orden"""
     orden = get_object_or_404(Orden, id=orden_id)
-    return render(request, 'tienda/orden_confirmada.html', {'orden': orden})
+    
+    # Generar mensaje de WhatsApp
+    mensaje = f"Hola! Realicé un pedido en el Rincón del Pescador.\n\n"
+    mensaje += f"*Orden # {orden.id}*\n"
+    mensaje += f"*Cliente:* {orden.nombre}\n"
+    mensaje += f"--------------------------\n"
+    
+    for item in orden.items.all():
+        mensaje += f"- {item.producto.nombre} (x{item.cantidad}): ${item.get_cost()}\n"
+        
+    mensaje += f"--------------------------\n"
+    mensaje += f"*Total:* ${orden.monto_total}\n\n"
+    mensaje += "Me gustaría coordinar el retiro/pago."
+    
+    whatsapp_url = f"https://wa.me/5492245471409?text={urllib.parse.quote(mensaje)}"
+    
+    return render(request, 'tienda/orden_confirmada.html', {
+        'orden': orden,
+        'whatsapp_url': whatsapp_url
+    })
+
+
+@staff_member_required
+def orden_dashboard(request):
+    """Vista del dashboard de pedidos para el administrador"""
+    ordenes = Orden.objects.all().order_by('-fecha_creacion')
+    
+    # Estadísticas simples
+    stats = {
+        'pendientes': ordenes.filter(estado='PENDIENTE').count(),
+        'preparacion': ordenes.filter(estado='PREPARACION').count(),
+        'listos': ordenes.filter(estado='LISTO').count(),
+        'entregados': ordenes.filter(estado='ENTREGADO').count(),
+    }
+    
+    return render(request, 'tienda/dashboard_ordenes.html', {
+        'ordenes': ordenes,
+        'stats': stats
+    })
+
+
+@staff_member_required
+def orden_detalle_admin(request, orden_id):
+    """Vista de detalle de orden para el administrador"""
+    orden = get_object_or_404(Orden, id=orden_id)
+    return render(request, 'tienda/orden_detalle_admin.html', {'orden': orden})
+
+
+@staff_member_required
+def cambiar_estado_orden(request, orden_id, nuevo_estado):
+    """Cambiar el estado de una orden"""
+    orden = get_object_or_404(Orden, id=orden_id)
+    if nuevo_estado in dict(Orden.ESTADO_CHOICES):
+        orden.estado = nuevo_estado
+        orden.save()
+    return redirect('tienda:orden_dashboard')
 
 
 def quienes_somos(request):

@@ -72,7 +72,7 @@
                         </svg>
 
                         <span class="cart-badge">
-                            {% if carrito|length > 0 %}{{ carrito|length }}{% endif %}
+                            {% if carrito and carrito|length > 0 %}{{ carrito|length }}{% endif %}
                         </span>
                     </button>
 
@@ -149,7 +149,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body">
-            {% if carrito|length > 0 %}
+            {% if carrito and carrito|length > 0 %}
             <ul class="list-group mb-3">
                 {% for item in carrito %}
                 <li class="list-group-item d-flex justify-content-between">

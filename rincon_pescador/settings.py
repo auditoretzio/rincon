@@ -171,12 +171,26 @@ STORAGES = {
 # CLOUDINARY (CORRECTO PARA CloudinaryField)
 # -------------------------------------------------
 
-CLOUDINARY_STORAGE = {
-    "CLOUDINARY_URL": os.environ.get("CLOUDINARY_URL"),
-}
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+if CLOUDINARY_URL:
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
+    CLOUDINARY_STORAGE = {
+        "CLOUDINARY_URL": CLOUDINARY_URL,
+    }
+
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+else:
+    # fallback seguro (evita error 500)
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # -------------------------------------------------
 # CART
@@ -204,3 +218,4 @@ CSRF_COOKIE_SECURE = True
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'tienda:index'
 LOGOUT_REDIRECT_URL = 'tienda:index'
+
